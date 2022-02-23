@@ -1,0 +1,61 @@
+{
+	"name": "discord-bot-template",
+	"version": "1.0.0",
+	"description": "",
+	"main": "./dist/index.js",
+	"scripts": {
+		"start": "node .",
+		"start:docker": "docker-compose -f docker-compose.yml up --force-recreate --build",
+		"build": "tsc",
+		"build:docker": "docker build . -t discord-bot:latest",
+		"dev": "ts-node-dev --inspect --poll --respawn --ignore-watch node_modules src/index.ts",
+		"dev:docker": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --force-recreate --build",
+		"deployInteractions": "node ./dist/deployCommands.js",
+		"deployInteractions:docker": "docker run --env-file .env --entrypoint node discord-bot:latest /app/dist/deployCommands.js",
+		"i18nToRedis": "node ./dist/i18nToRedis.js",
+		"i18nToRedis:docker": "docker-compose run --rm --name discord-bot-i18n-to-redis --entrypoint node discord-bot '/app/dist/i18nToRedis.js'",
+		"debug:docker": "docker run -ti --entrypoint sh discord-bot:latest",
+		"prepare": "husky install"
+	},
+	"keywords": [
+		"discord",
+		"boilerplate",
+		"template"
+	],
+	"author": "eduardozgz@protonmail.com",
+	"license": "MIT",
+	"engines": {
+		"node": ">=16.0"
+	},
+	"prettier": {
+		"useTabs": true,
+		"semi": true,
+		"trailingComma": "none",
+		"arrowParens": "always"
+	},
+	"dependencies": {
+		"@discordjs/builders": "^0.12.0",
+		"@discordjs/rest": "^0.3.0",
+		"@hapi/bourne": "^2.0.0",
+		"discord-api-types": "^0.26.1",
+		"discord.js": "^13.6.0",
+		"dotenv": "^10.0.0",
+		"husky": "^7.0.4",
+		"ioredis": "^4.28.3",
+		"joi": "^17.5.0",
+		"lodash": "^4.17.21",
+		"mongoose": "^6.1.4",
+		"twemoji": "^13.1.0",
+		"uuid": "^8.3.2",
+		"winston": "^3.5.0"
+	},
+	"devDependencies": {
+		"@types/ioredis": "^4.28.7",
+		"@types/lodash": "^4.14.178",
+		"@types/twemoji": "^12.1.2",
+		"prettier": "^2.5.1",
+		"pretty-quick": "^3.1.3",
+		"ts-node-dev": "^1.1.8",
+		"typescript": "^4.5.4"
+	}
+}
