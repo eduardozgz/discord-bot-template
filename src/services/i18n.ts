@@ -32,9 +32,12 @@ export const availableLocales = [
 ];
 
 export async function i18n(interaction: string | Interaction) {
-	let locale: string = config.i18n.defaultLocale;
+	let locale: string;
+
 	if (typeof interaction === "string") {
-		locale = interaction;
+		if (!availableLocales.includes(interaction)) throw new Error('Given locale is not supported');
+		 	
+		locale = interaction; 
 	} else {
 		if (interaction.inGuild()) {
 			const { locale: forcedGuildLocale } = await GuildSettings.init(
@@ -48,17 +51,16 @@ export async function i18n(interaction: string | Interaction) {
 			if (availableLocales.includes(forcedGuildLocale)) {
 				locale = forcedGuildLocale;
 			}
-		} else {
-			const userLocale = interaction.locale;
+		} 
 
-			if (availableLocales.includes(userLocale)) {
-				locale = userLocale;
-			} else {
-				locale = config.i18n.defaultLocale;
-			}
-		}
+		const userLocale = interaction.locale;
+		if (availableLocales.includes(userLocale)) {
+			locale ??= userLocale;
+		} 
+
+		locale ??= config.i18n.defaultLocale;
 	}
-	
+
 	async function translate<T extends Translations>(
 		desiredTranslation: T,
 		placeholderData?: typeof TranslationPlaceholders[T]
