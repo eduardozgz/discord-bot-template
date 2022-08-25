@@ -3,10 +3,16 @@ import config from "./config";
 import Bot from "./Bot";
 import mongoose from "mongoose";
 import logger from "./logger";
+import { deployCommands } from "./utils/deployCommands";
 
 // Bot
 const bot = new Bot();
-bot.client.login(config.discord.bot.token);
+(async () => {
+	if (config.discord.autoDeployCommands) {
+		await deployCommands().catch(() => null);
+	}
+	bot.client.login(config.discord.bot.token);
+})();
 
 // Database
 mongoose

@@ -58,7 +58,7 @@ export const interactionCreateEvent = new Event({
 					embed.setDescription(
 						description.replaceAll(
 							"{SUPPORT_SERVER_INVITE}",
-							config.discord.suuportServer.url
+							config.discord.suportServer.url
 						)
 					);
 				}
